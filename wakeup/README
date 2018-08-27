@@ -1,0 +1,15 @@
+文件说明：
+	libxaudio_engine.so  -- 前端动态库
+	wakeup_model.bin	 -- 前端唤醒模型
+	xaudio_engine.h		 -- 前端动态库头文件
+	xaudio_engine.conf 	 -- 前端配置文件
+	
+	其中配置文件中，[wakeup opt]\[model_path]为唤醒模型model绝对路径。
+
+本次更新：
+1、修正多轮对话时asr上传功能失效的bug。
+2、内存优化。
+
+已经问题：
+2、部分API采用空实现;
+

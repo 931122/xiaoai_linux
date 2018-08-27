@@ -1,0 +1,32 @@
+LOCAL_PATH:= $(CURDIR)
+
+#compiler params
+LDFLAGS += -L$(LOCAL_PATH)/sdk/lib -L$(LOCAL_PATH)/wakeup/lib
+INCLUDE += -I$(LOCAL_PATH)/ -I$(LOCAL_PATH)/sdk/include -I$(LOCAL_PATH)/wakeup/include -I$(LOCAL_PATH)/playlist/ -I$(LOCAL_PATH)/audio/ -I$(LOCAL_PATH)/json/ -I/usr/local/include -I/usr/include/SDL2/
+CFLAGS  += -g  -Wall -Wno-deprecated-declarations
+CXXFLAGS+= -g
+
+#build test code param
+ifndef BUILD_OUT_PATH
+	BUILD_OUT_PATH=$(LOCAL_PATH)/out
+	export BUILD_OUT_PATH
+endif
+BUILD_OUT_BIN_PATH:=$(BUILD_OUT_PATH)/bin
+TARGET_NAME:= $(BUILD_OUT_BIN_PATH)/wakeup_trigger
+
+#collect need compile src
+PROJ_SRCS:= $(wildcard $(LOCAL_PATH)/wakeup_trigger.c $(LOCAL_PATH)/audio/*.c $(LOCAL_PATH)/json/*.c)
+
+#PROJ_SRCS+= $(LOCAL_PATH)/audio/audiorec.c
+
+DEPEND_LIB:= -lm -lmibrainsdk -pthread  -lavcodec -lavformat -lavutil -lavresample -lswresample -lasound -lSDL2 -lxaudio_engine
+
+
+#$(warning "################$(LDFLAGS)#######")
+all: $(TARGET_NAME)
+
+$(TARGET_NAME): $(PROJ_SRCS)
+	mkdir -p $(BUILD_OUT_BIN_PATH)
+	$(CC) $(CFLAGS) $(INCLUDE) $(LDFLAGS) -DWAKEUP_EXAMPLE -o $@  $(PROJ_SRCS) $(DEPEND_LIB)
+clean:
+	rm -rf $(BUILD_OUT_PATH)
