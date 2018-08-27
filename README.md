@@ -45,7 +45,7 @@
 
 5、getRequestSign.sh 获取当前证书的access_token 更新到signal_trigger.c替换appToken参数。
 
-   token有效期7天。当前profile.py和id仅作为示例。
+   token有效期7天。当前profile.py和id仅作为示例。可以做测试使用。
 
 6、编译执行
 
