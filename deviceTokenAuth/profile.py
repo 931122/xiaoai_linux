@@ -6,41 +6,25 @@ from ecdsa import SigningKey, VerifyingKey
 from ecdsa.util import sigencode_der, sigdecode_der
 import wget
 import sys, getopt, os
-def generate_signature(app_id, message):
+def generate_signature(app_id, device_id):
     """
       生成签名
-    """
-    """
-    url = 'https://cnbj1-inner-fds.api.xiaomi.net/inside-avis-sdk/' + app_id + '-privatekey.pem'
-    filename = wget.download(url)
     """
     filename = "326766038739850240-privatekey.pem"
     print "\n"
     private_key = SigningKey.from_pem(open(filename).read())
-    """
-    if os.path.exists(filename):
-      os.remove(filename)
-    """
-    signature = base64.urlsafe_b64encode(private_key.sign(message, hashfunc=hashlib.sha256, sigencode=sigencode_der))
+    signature = base64.urlsafe_b64encode(private_key.sign(device_id, hashfunc=hashlib.sha256, sigencode=sigencode_der))
     return signature
 
 
-def verify_signature(app_id, message, signature):
+def verify_signature(app_id, device_id, signature):
     """
-      验证签名
-    """
-    """
-    url = 'https://cnbj1-inner-fds.api.xiaomi.net/inside-avis-sdk/' + app_id + '-pubkey.pem'
-    filename = wget.download(url)
+      验证签名. 服务端功能
     """
     filename = "326766038739850240-publickey.pem"
     print "\n"
     public_key = VerifyingKey.from_pem(open(filename).read())
-    """
-    if os.path.exists(filename):
-      os.remove(filename)
-    """
-    check_res = public_key.verify(base64.urlsafe_b64decode(signature), message,
+    check_res = public_key.verify(base64.urlsafe_b64decode(signature), device_id,
                                   hashfunc=hashlib.sha256, sigdecode=sigdecode_der)
     return check_res
 
