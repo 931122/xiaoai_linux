@@ -14,7 +14,9 @@
 
   ffmpeg 3.4 (libavcodec libavformat libavutil libavresample)
 
-  SDL2    libSDL2
+  SDL2
+  
+  ubuntu 16.04可直接安装相应lib和dev库
 
 
 ### FFmpeg compiler param
