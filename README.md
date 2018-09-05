@@ -76,3 +76,6 @@
 
   独立播放器方式
   https://github.com/fenggui321/simple_audio_player
+
+
+ ![交流群](./doc/qq.png)
