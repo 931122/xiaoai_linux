@@ -183,7 +183,7 @@ int miBrainSdkPlayerStart(void)
         return -1;
     }
     // If high priority channel is playing, pending audio player
-    //duer_speech_need_play_internal
+    //
     if (aivs_speak_on_work()) {
         current_play_status = PAUSED;
         g_playList.items[g_playList.current].playoffset = 0;

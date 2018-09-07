@@ -282,7 +282,7 @@ static void record_cb(char *data, unsigned long len, void *user_para)
     errcode = miBrainSdkAddData(taskId, data, len, 0);
     //writeToFile("record.wav", data, len);
     /* process audio */
-    //errcode = write_audio_data(sr, data, len);
+    //errcode = writeToFile(sr, data, len);
     if (errcode) {
         errcode = stop_record(recorder);
         //printf("###stop record :%ld error %d\n", len, errcode);
@@ -297,7 +297,11 @@ static void record_cb(char *data, unsigned long len, void *user_para)
         return;
     }
 }
+/* 录音参数
+   此处录音 2个通道后分离 出record数据
+   实际情况根据芯片情况设置 确保录音后上传的单通道有数据 ==>writeToFile
 
+   */
 #define DEFAULT_FORMAT        \
 {\
     RAW_FORMAT_PCM,    \
@@ -335,7 +339,7 @@ static int start_full(void)
     }
 
     /* 等待录音结束或者 信号异步等 */
-    /* 远场通信模式 如果按键录音 由按键事件和VAD综合判断录音结束 */
+    /* 远场模式或 按键触发录音 由按键事件和VAD 判断录音结束 */
     while (!is_record_stopped(recorder)) {
         sleep(1);
     }
@@ -382,8 +386,9 @@ static int buldParm(void)
     /* 当前仅支持2.2 版本了。parseMusicNlpResult 解析结果有变化 需要重写解析过程 */
     //params.nlpParams.nlpVersion = "2.2";
 
-    /* tp 认证方式 初始profile 生成参考 deviceTokenAuth。后续解析profile 请求token。
-       token有效期7天 刷新参考profile.py         改写   c ?   */
+    /* tp 认证方式 初始profile 生成参考 deviceTokenAuth。后续解析profile请求token。
+       (此profile文件生产过程中打到固件中做量产,       或开发者通过网络服务获取）
+       token有效期7天 refresh_token 有效期30天 刷新参考profile.py         改写   c ?   */
     // TODO TOKEN REFRESH
     params.appId = "326766038739850240";
     params.appToken = "RMQ3XqsVzc8.UcQiXr4X20-URMu9VeZFxlzcDyf_I7yWNqMcZ89bvakv8gMM6HP6nnn5L035Q5eNEIcGG_lDl4UV9GIq-ECc2bp51-mgA83qRMQ.KE3F44Slx688FyekDoA7DTrQvbcJo10sb-11fKmxvSQ";
@@ -506,9 +511,10 @@ static void main_loop(void)
     player_init();
 
     /* 播放列表 取资源        参数   token 内部刷新 for music CP + ID 取资源 */
+    /* 没有xiaomiId时     需要xiaomiid 的资源不可用 */
     miBrainSdkPlayerConfig(&params, NULL, "1206359785", NULL);
 
-    /* TODO  定时器 线程 token刷新时  更新           */
+    /* TODO  定时器 线程 token刷新时  更新 ?           */
 
     miBrainSdkPlayerRefreshConfig(MIBRAIN_AUTH_TPTOKEN, "RMQ3XqsVzc8.UcQiXr4X20-URMu9VeZFxlzcDyf_I7yWNqMcZ89bvakv8gMM6HP6nnn5L035Q5eNEIcGG_lDl4UV9GIq-ECc2bp51-mgA83qRMQ.KE3F44Slx688FyekDoA7DTrQvbcJo10sb-11fKmxvSQ");
 

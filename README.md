@@ -67,7 +67,7 @@
 '''
 
 # TODO
- 1、nlp 支持2.2了
+ 1、nlp 支持2.2了,nlp需要升级
 
  2、设备Token鉴权 token用的python 刷新整合到程序里面
  

@@ -18,6 +18,7 @@ TODO:
 3  SDL_CreateThread replace pthread_create ?
 
 4. 支持维护多个播放资源列表 方便从pause快速恢复 不用seek？
+   SDL_OpenAudio受限 考虑混音方式mixer
 
 */
 
@@ -639,7 +640,7 @@ void player_exit(void)
 
 
 
-/* 控制列表由 SDK实现时 APP实现这个weak 函数 */
+/* TODO 控制列表由 SDK实现时 APP实现这个weak 函数 */
 
 /* 播放器独立实现 此处通过mqtt public 消息控制 播放器 并接受回应 */
 int miBrain_audio_pause_handler(void){
